@@ -8,7 +8,7 @@ struct _vector {
     Self   self;
 };
 
-Vector vectoNew(Self self) {
+Vector vectorNew(Self self) {
     Vector vector    = (Vector)calloc(1, sizeof(struct _vector));
     vector->self     = self;
     vector->capacity = 100;
@@ -40,11 +40,23 @@ int vectorSize(Vector vector) {
     return vector->last;
 }
 
+void vectorShow(Vector vector) {
+    if (!vector->self->print) {
+        printf("error: object is not printable.\n");
+        exit(1);
+    }
+    int i;
+    for (i = 0; i < vector->last; i++) {
+        vector->self->print(vector->data[i]);
+    }
+}
+
 void vectorDestroy(Vector vector) {
     int i;
     for (i = 0; i < vector->last; i++) {
         vector->self->destroy(vector->data[i]);
     }
+    selfDestroy(vector->self);
     free(vector->data);
     free(vector);
 }
