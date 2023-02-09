@@ -11,6 +11,7 @@ generic vectorAt(Vector vector, int x);
 void    vectorPush(Vector vector, generic data);
 int     vectorSize(Vector vector);
 int     vectorIndexOf(Vector vector, generic data);
+void    vectorShow(Vector vector);
 void    vectorDestroy(Vector vector);
 
 #endif  // VECTOR_H

@@ -1,4 +1,5 @@
 #include <i32.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 int *i32New(int x) {
@@ -7,8 +8,13 @@ int *i32New(int x) {
     return ptr;
 }
 
-Self i32Slef() {
+void i32print(void *data) {
+    printf("%d", *(int *)data);
+}
+
+Self i32Self() {
     Self i32     = selfNew();
+    i32->print   = i32print;
     i32->destroy = free;
     return i32;
 }
