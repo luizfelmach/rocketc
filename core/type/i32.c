@@ -3,12 +3,12 @@
 
 int *i32New(int x) {
     int *ptr = malloc(1 * sizeof(int));
-    *ptr = x;
+    *ptr     = x;
     return ptr;
 }
 
 Self i32Slef() {
-    Self i32 = selfNew();
+    Self i32     = selfNew();
     i32->destroy = free;
     return i32;
 }
