@@ -4,16 +4,16 @@
 #include <vector.h>
 
 struct _vector {
-    void **data;
-    int    last, capacity;
-    Self   self;
+    generic *data;
+    Self     self;
+    int      last, capacity;
 };
 
 Vector vectorNew(Self self) {
-    Vector vector    = (Vector)calloc(1, sizeof(struct _vector));
+    Vector vector    = calloc(1, sizeof(struct _vector));
     vector->self     = self;
     vector->capacity = 100;
-    vector->data     = calloc(vector->capacity, sizeof(void *));
+    vector->data     = calloc(vector->capacity, sizeof(generic));
     return vector;
 }
 
@@ -24,31 +24,76 @@ generic vectorAt(Vector vector, int index) {
     return vector->data[index];
 }
 
-void vectorPush(Vector vector, void *data) {
+generic vectorFront(Vector vector) {
+    if (!vector->last) {
+        return NULL;
+    }
+    return vector->data[0];
+}
+
+generic vectorBack(Vector vector) {
+    if (!vector->last) {
+        return NULL;
+    }
+    return vector->data[vector->last - 1];
+}
+
+void vectorPush(Vector vector, generic data) {
     if (vector->last == vector->capacity) {
         vector->capacity *= 2;
-        vector->data = realloc(vector->data, vector->capacity * sizeof(void *));
+        vector->data =
+            realloc(vector->data, vector->capacity * sizeof(generic));
     }
     vector->data[vector->last++] = data;
 }
 
-int vectorIndexOf(Vector vector, generic data) {
-    // todo
-    return -1;
+void vectorPop(Vector vector) {
+    if (!vector->last) {
+        return;
+    }
+    vector->self->destroy(vector->data[--vector->last]);
+}
+
+void vectorClear(Vector vector) {
+    int i, size = vector->last;
+    for (i = 0; i < size; i++) {
+        vectorPop(vector);
+    }
 }
 
 int vectorSize(Vector vector) {
     return vector->last;
 }
 
-void vectorShow(Vector vector) {
-    if (!vector->self->print) {
-        printf("error: object is not printable.\n");
-        exit(1);
+generic vectorFind(Vector vector, generic data) {
+    int i;
+    for (i = 0; i < vector->last; i++) {
+        if (!vector->self->compare(data, vector->data[i])) {
+            vector->self->destroy(data);
+            return vector->data[i];
+        }
     }
+    vector->self->destroy(data);
+    return NULL;
+}
+
+int vectorIndexOf(Vector vector, generic data) {
+    int i;
+    for (i = 0; i < vector->last; i++) {
+        if (!vector->self->compare(data, vector->data[i])) {
+            vector->self->destroy(data);
+            return i;
+        }
+    }
+    vector->self->destroy(data);
+    return -1;
+}
+
+void vectorShow(Vector vector) {
     int i;
     for (i = 0; i < vector->last; i++) {
         vector->self->print(vector->data[i]);
+        puts("\n");
     }
 }
 
