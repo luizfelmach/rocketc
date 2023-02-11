@@ -1,4 +1,5 @@
 #include <self.h>
+#include <stdlib.h>
 
 Self selfNew() {
     Self self = (Self)calloc(1, sizeof(struct _self));
