@@ -23,7 +23,7 @@ int f32compare(void *a, void *b) {
     return 0;
 }
 
-Self i32Self() {
+Self f32Self() {
     Self f32     = selfNew("f32");
     f32->print   = f32print;
     f32->compare = f32compare;
