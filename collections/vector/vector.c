@@ -64,27 +64,29 @@ int vectorSize(Vector vector) {
 }
 
 generic vectorFind(Vector vector, generic data) {
-    int i;
+    generic target = NULL;
+    int     i;
     for (i = 0; i < vector->last; i++) {
         if (!vector->self->compare(data, vector->data[i])) {
-            vector->self->destroy(data);
-            return vector->data[i];
+            target = vector->data[i];
+            break;
         }
     }
     vector->self->destroy(data);
-    return NULL;
+    return target;
 }
 
 int vectorIndexOf(Vector vector, generic data) {
+    int target = -1;
     int i;
     for (i = 0; i < vector->last; i++) {
         if (!vector->self->compare(data, vector->data[i])) {
-            vector->self->destroy(data);
-            return i;
+            target = i;
+            break;
         }
     }
     vector->self->destroy(data);
-    return -1;
+    return target;
 }
 
 void vectorSwap(Vector vector, int a, int b) {
