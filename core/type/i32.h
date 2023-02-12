@@ -6,4 +6,4 @@
 int *i32New(int x);
 Self i32Self();
 
-#endif
+#endif  // I32_H
