@@ -1,5 +1,4 @@
 #include <self.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <vector.h>
 
@@ -41,8 +40,7 @@ generic vectorBack(Vector vector) {
 void vectorPush(Vector vector, generic data) {
     if (vector->last == vector->capacity) {
         vector->capacity *= 2;
-        vector->data =
-            realloc(vector->data, vector->capacity * sizeof(generic));
+        vector->data = realloc(vector->data, vector->capacity * sizeof(generic));
     }
     vector->data[vector->last++] = data;
 }
@@ -89,12 +87,13 @@ int vectorIndexOf(Vector vector, generic data) {
     return -1;
 }
 
-void vectorShow(Vector vector) {
-    int i;
-    for (i = 0; i < vector->last; i++) {
-        vector->self->print(vector->data[i]);
-        puts("\n");
+void vectorSwap(Vector vector, int a, int b) {
+    if (a >= vector->last || b >= vector->last) {
+        return;
     }
+    generic target  = vectorAt(vector, a);
+    vector->data[a] = vector->data[b];
+    vector->data[b] = target;
 }
 
 void vectorDestroy(Vector vector) {

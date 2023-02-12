@@ -16,7 +16,7 @@ void    vectorClear(Vector vector);
 int     vectorSize(Vector vector);
 generic vectorFind(Vector vector, generic data);
 int     vectorIndexOf(Vector vector, generic data);
-void    vectorShow(Vector vector);
+void    vectorSwap(Vector vector, int a, int b);
 void    vectorDestroy(Vector vector);
 
 #endif  // VECTOR_H
