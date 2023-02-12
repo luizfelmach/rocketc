@@ -29,8 +29,6 @@ int main() {
 
     vectorClear(v);
 
-    vectorShow(v);
-
     vectorDestroy(v);
     return 0;
 }
