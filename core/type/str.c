@@ -10,7 +10,7 @@ char *strNew(char *x) {
 Self strSelf() {
     Self str     = selfNew("str");
     str->destroy = free;
-    str->compare = strcmp;
-    str->print   = printf;
+    str->compare = (compareFn)strcmp;
+    str->print   = (printFn)printf;
     return str;
 }
