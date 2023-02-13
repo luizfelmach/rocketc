@@ -3,6 +3,10 @@
 
 #include <self.h>
 
+#define vectorFor(var, vec) \
+    var = vectorAt(vec, 0); \
+    for (int __i = 0; __i < vectorSize(vec); __i++, var = vectorAt(vec, __i))
+
 typedef struct _vector *Vector;
 typedef void           *generic;  // Change to core // todo
 
