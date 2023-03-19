@@ -12,7 +12,7 @@ PROJECT = rocketc
 TARGETS = 
 IMPORTS += core/self core/type
 IMPORTS += collections/vector collections/list collections/stack collections/map collections/queue collections/binaryTree
-
+LINKER = m      # example: pthread m
 
 
 # Folders
@@ -57,8 +57,12 @@ EXECUTABLES = $(addprefix $(BUILD_B)/, $(subst .c,, $(TARGETS)))
 
 CC = gcc
 AR = ar
+LL = $(addprefix -l, $(LINKER))
+CC_FLAGS += -O2 -Wall -Wextra -pedantic -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align
+DEBUG_FLAGS += -fsanitize=address -fsanitize=undefined -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize-recover=all -fstack-protector-all -D_FORTIFY_SOURCE=2 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC
 
 
+.PHONY: all
 all: $(LIBRARY) $(HEADER) $(TESTS) $(EXECUTABLES)
 
 # Executables
@@ -67,7 +71,7 @@ $(BUILD_B)/%: %.c $(LIBRARY) $(HEADER)
 	$(eval FOLDER = $(addprefix $(BUILD_B)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_B)/, $(subst .c,,$<)))
 	@mkdir -p $(FOLDER)
-	@$(CC) -o $(OUT) -L$(BUILD_L) -I$(BUILD_I)/ $< -l$(PROJECT)
+	@$(CC) $(LL) $(CC_FLAGS) -o $(OUT) -L$(BUILD_L) -I$(BUILD_I)/ $< -l$(PROJECT)
 
 # Library
 
@@ -83,14 +87,14 @@ $(BUILD_O)/%.o: %.c %.h
 	$(eval OUT = $(addprefix $(BUILD_O)/, $(subst .c,.o,$<)))
 	@mkdir -p $(FOLDER)
 	@echo "compiling $(OUT)"
-	@$(CC) -c -o $(OUT) $< $(INCLUDES)
+	@$(CC) $(LL) $(CC_FLAGS) -c -o $(OUT) $< $(INCLUDES)
 
 $(BUILD_O)/%.o: %.c
 	$(eval FOLDER = $(addprefix $(BUILD_O)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_O)/, $(subst .c,.o,$<)))
 	@mkdir -p $(FOLDER)
 	@echo "compiling $(OUT)"
-	@$(CC) -c -o $(OUT) $< $(INCLUDES)
+	@$(CC) $(LL) $(CC_FLAGS) -c -o $(OUT) $< $(INCLUDES)
 
 # Header
 
@@ -113,7 +117,8 @@ $(BUILD_T)/%: %.c $(LIBRARY) $(HEADER)
 	$(eval OUT = $(addprefix $(BUILD_T)/, $(subst .c,,$<)))
 	@mkdir -p $(FOLDER)
 	@echo "compiling $(OUT)"
-	@$(CC) -o $(OUT) $< -I$(BUILD_I) -L$(BUILD_L) -l$(PROJECT)
+	@$(CC) $(LL) $(CC_FLAGS) -o $(OUT) $< -I$(BUILD_I) -L$(BUILD_L) -l$(PROJECT)
 
+.PHONY: clean
 clean:
 	rm -rf $(BUILD)

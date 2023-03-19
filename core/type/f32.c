@@ -17,7 +17,8 @@ int f32compare(void *a, void *b) {
     float y = *(float *)b;
     if (x - y > 0) {
         return 1;
-    } else if (x - y > 0) {
+    }
+    if (x - y > 0) {
         return -1;
     }
     return 0;

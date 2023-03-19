@@ -5,7 +5,7 @@
 struct _vector {
     generic *data;
     Self     self;
-    int      last, capacity;
+    size_t   last, capacity;
 };
 
 Vector vectorNew(Self self) {
@@ -16,7 +16,7 @@ Vector vectorNew(Self self) {
     return vector;
 }
 
-generic vectorAt(Vector vector, int index) {
+generic vectorAt(Vector vector, size_t index) {
     if (vector->last <= index) {
         return NULL;
     }
@@ -53,19 +53,19 @@ void vectorPop(Vector vector) {
 }
 
 void vectorClear(Vector vector) {
-    int i, size = vector->last;
+    size_t i, size = vector->last;
     for (i = 0; i < size; i++) {
         vectorPop(vector);
     }
 }
 
-int vectorSize(Vector vector) {
+size_t vectorSize(Vector vector) {
     return vector->last;
 }
 
 generic vectorFind(Vector vector, generic data) {
     generic target = NULL;
-    int     i;
+    size_t  i;
     for (i = 0; i < vector->last; i++) {
         if (!vector->self->compare(data, vector->data[i])) {
             target = vector->data[i];
@@ -77,11 +77,11 @@ generic vectorFind(Vector vector, generic data) {
 }
 
 int vectorIndexOf(Vector vector, generic data) {
-    int target = -1;
-    int i;
+    int    target = -1;
+    size_t i;
     for (i = 0; i < vector->last; i++) {
         if (!vector->self->compare(data, vector->data[i])) {
-            target = i;
+            target = (int)i;
             break;
         }
     }
@@ -89,7 +89,7 @@ int vectorIndexOf(Vector vector, generic data) {
     return target;
 }
 
-void vectorSwap(Vector vector, int a, int b) {
+void vectorSwap(Vector vector, size_t a, size_t b) {
     if (a >= vector->last || b >= vector->last) {
         return;
     }
@@ -99,7 +99,7 @@ void vectorSwap(Vector vector, int a, int b) {
 }
 
 void vectorDestroy(Vector vector) {
-    int i;
+    size_t i;
     for (i = 0; i < vector->last; i++) {
         vector->self->destroy(vector->data[i]);
     }

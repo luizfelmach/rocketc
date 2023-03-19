@@ -9,7 +9,7 @@ int main() {
         vectorPush(v, i32New(i));
     }
 
-    printf("vector size: %d\n", vectorSize(v));
+    printf("vector size: %lu\n", vectorSize(v));
     printf("index of 100: %d\n", vectorIndexOf(v, i32New(100)));
     printf("index of -10: %d\n", vectorIndexOf(v, i32New(-10)));
     printf("index of 2: %d\n", vectorIndexOf(v, i32New(2)));
