@@ -1,11 +1,12 @@
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 
+
 IMPORTS += core/self core/type
 IMPORTS += collections/vector collections/list
 
 
 
-BUILD = target
+BUILD = .build
 BUILD_L = $(BUILD)/lib
 BUILD_I = $(BUILD)/include
 BUILD_O = $(BUILD)/objs
