@@ -1,74 +1,119 @@
-rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+
+#    This file is a template for gnu make.
+#    Try it by editing the variables below.
+#
+#    by github.com/luizfelmach
+#    2023
 
 
+# Variables
+
+PROJECT = rocketc
+TARGETS = 
 IMPORTS += core/self core/type
 IMPORTS += collections/vector collections/list collections/stack collections/map collections/queue collections/binaryTree
 
 
+
+# Folders
 
 BUILD = .build
 BUILD_L = $(BUILD)/lib
 BUILD_I = $(BUILD)/include
 BUILD_O = $(BUILD)/objs
 BUILD_T = $(BUILD)/tests
+BUILD_B = $(BUILD)/bin
 
 
+# Misc
+
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+
+
+# Files
 
 FILES_C = $(foreach IMPORT, $(IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), ,$S)))
 HEADERS_H = $(foreach IMPORT, $(IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.h), $(if $(findstring /tests/, $S), ,$S)))
 TESTS_C = $(foreach IMPORT, $(IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), $S)))
 
 
-CC = gcc
-AR = ar
+# Rules and targets
+
 OBJECTS = $(addprefix $(BUILD_O)/, $(subst .c,.o, $(FILES_C)))
-TESTS = $(addprefix $(BUILD_T)/, $(subst .c,, $(TESTS_C)))
 INCLUDES = $(addprefix -I, $(IMPORTS))
 HEADERS = $(notdir $(HEADERS_H))
 
-all: $(BUILD_L)/librocketc.a $(BUILD_I)/rocketc/rocketc.h
+# Auxiliary
 
-$(BUILD_L)/librocketc.a: $(OBJECTS)
+LIBRARY_NAME = $(addsuffix .a, $(addprefix lib, $(PROJECT)))
+HEADER_NAME = $(addsuffix .h, $(PROJECT))
+LIBRARY = $(addprefix $(BUILD_L)/, $(LIBRARY_NAME))
+HEADER = $(addprefix $(BUILD_I)/, $(HEADER_NAME))
+TESTS = $(addprefix $(BUILD_T)/, $(subst .c,, $(TESTS_C)))
+EXECUTABLES = $(addprefix $(BUILD_B)/, $(subst .c,, $(TARGETS)))
+
+
+# Compiler
+
+CC = gcc
+AR = ar
+
+
+all: $(LIBRARY) $(HEADER) $(TESTS) $(EXECUTABLES)
+
+# Executables
+
+$(BUILD_B)/%: %.c $(LIBRARY) $(HEADER)
+	$(eval FOLDER = $(addprefix $(BUILD_B)/, $(dir $<)))
+	$(eval OUT = $(addprefix $(BUILD_B)/, $(subst .c,,$<)))
+	@mkdir -p $(FOLDER)
+	@$(CC) -o $(OUT) -L$(BUILD_L) -I$(BUILD_I)/ $< -l$(PROJECT)
+
+# Library
+
+$(BUILD_L)/$(LIBRARY_NAME): $(OBJECTS)
 	@mkdir -p $(BUILD_L)
-	@$(AR) -crs $(BUILD_L)/librocketc.a $^
-	@echo "finished librocketc.a"
+	@$(AR) -crs $(BUILD_L)/$(LIBRARY_NAME) $^
+	@echo "finished $(LIBRARY_NAME)"
+
+# Objects
 
 $(BUILD_O)/%.o: %.c %.h
 	$(eval FOLDER = $(addprefix $(BUILD_O)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_O)/, $(subst .c,.o,$<)))
 	@mkdir -p $(FOLDER)
-	@echo "building $(OUT)"
+	@echo "compiling $(OUT)"
 	@$(CC) -c -o $(OUT) $< $(INCLUDES)
 
 $(BUILD_O)/%.o: %.c
 	$(eval FOLDER = $(addprefix $(BUILD_O)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_O)/, $(subst .c,.o,$<)))
 	@mkdir -p $(FOLDER)
-	@echo "building $(OUT)"
+	@echo "compiling $(OUT)"
 	@$(CC) -c -o $(OUT) $< $(INCLUDES)
 
-$(BUILD_I)/rocketc/rocketc.h: $(HEADERS_H)
-	@mkdir -p $(BUILD_I)/rocketc 
-	@rm -rf $(BUILD_I)/rocketc/rocketc.h
-	@touch $(BUILD_I)/rocketc/rocketc.h
+# Header
+
+$(BUILD_I)/$(HEADER_NAME): $(HEADERS_H)
+	@mkdir -p $(BUILD_I)
+	@rm -rf $(BUILD_I)/$(HEADER_NAME)
+	@touch $(BUILD_I)/$(HEADER_NAME)
 	@for header_h in $(HEADERS_H) ; do \
-		cp $${header_h} $(BUILD_I)/rocketc; \
+		cp $${header_h} $(BUILD_I); \
 	done
 	@for header in $(HEADERS) ; do \
-        echo "#include <$${header}>" >> $(BUILD_I)/rocketc/rocketc.h; \
+        echo "#include <$${header}>" >> $(BUILD_I)/$(HEADER_NAME); \
     done
-	@echo "finished rocketc.h"
+	@echo "finished $(HEADER_NAME)"
 
-tests: $(TESTS)
-	@echo "finished tests"
+# Tests
 
-$(BUILD_T)/%: %.c $(BUILD_L)/librocketc.a $(BUILD_I)/rocketc/rocketc.h
+$(BUILD_T)/%: %.c $(LIBRARY) $(HEADER)
 	$(eval FOLDER = $(addprefix $(BUILD_T)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_T)/, $(subst .c,,$<)))
 	@mkdir -p $(FOLDER)
-	@echo "building $(OUT)"
-	@$(CC) -o $(OUT) $< -I$(BUILD_I)/rocketc -L$(BUILD_L) -lrocketc
-
+	@echo "compiling $(OUT)"
+	@$(CC) -o $(OUT) $< -I$(BUILD_I) -L$(BUILD_L) -l$(PROJECT)
 
 clean:
 	rm -rf $(BUILD)
