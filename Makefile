@@ -2,7 +2,7 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 
 
 IMPORTS += core/self core/type
-IMPORTS += collections/vector collections/list
+IMPORTS += collections/vector collections/list collections/stack collections/map collections/queue collections/binaryTree
 
 
 
