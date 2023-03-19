@@ -21,6 +21,7 @@ TESTS_C = $(foreach IMPORT, $(IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT)
 CC = gcc
 AR = ar
 OBJECTS = $(addprefix $(BUILD_O)/, $(subst .c,.o, $(FILES_C)))
+TESTS = $(addprefix $(BUILD_T)/, $(subst .c,, $(TESTS_C)))
 INCLUDES = $(addprefix -I, $(IMPORTS))
 HEADERS = $(notdir $(HEADERS_H))
 
@@ -56,6 +57,17 @@ $(BUILD_I)/rocketc/rocketc.h: $(HEADERS_H)
         echo "#include <$${header}>" >> $(BUILD_I)/rocketc/rocketc.h; \
     done
 	@echo "finished rocketc.h"
+
+tests: $(TESTS)
+	@echo "finished tests"
+
+$(BUILD_T)/%: %.c $(BUILD_L)/librocketc.a $(BUILD_I)/rocketc/rocketc.h
+	$(eval FOLDER = $(addprefix $(BUILD_T)/, $(dir $<)))
+	$(eval OUT = $(addprefix $(BUILD_T)/, $(subst .c,,$<)))
+	@mkdir -p $(FOLDER)
+	@echo "building $(OUT)"
+	@$(CC) -o $(OUT) $< -I$(BUILD_I)/rocketc -L$(BUILD_L) -lrocketc
+
 
 clean:
 	rm -rf $(BUILD)
