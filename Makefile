@@ -79,6 +79,7 @@ $(BUILD_B)/%: %.c $(LIBRARY) $(HEADER)
 	$(eval FOLDER = $(addprefix $(BUILD_B)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_B)/, $(subst .c,,$<)))
 	@mkdir -p $(FOLDER)
+	@echo "linking with $(notdir $(OUT))"
 	@$(CC) $(LL) $(CC_FLAGS) -o $(OUT) -L$(BUILD_L) -I$(BUILD_I)/ $< -l$(PROJECT)
 	@cp $(OUT) .
 
@@ -95,14 +96,14 @@ $(BUILD_O)/%.o: %.c %.h
 	$(eval FOLDER = $(addprefix $(BUILD_O)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_O)/, $(subst .c,.o,$<)))
 	@mkdir -p $(FOLDER)
-	@echo "compiling $(OUT)"
+	@echo "compiling $(notdir $(OUT))"
 	@$(CC) $(LL) $(CC_FLAGS) -c -o $(OUT) $< $(INCLUDES)
 
 $(BUILD_O)/%.o: %.c
 	$(eval FOLDER = $(addprefix $(BUILD_O)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_O)/, $(subst .c,.o,$<)))
 	@mkdir -p $(FOLDER)
-	@echo "compiling $(OUT)"
+	@echo "compiling $(notdir $(OUT))"
 	@$(CC) $(LL) $(CC_FLAGS) -c -o $(OUT) $< $(INCLUDES)
 
 # Header
@@ -125,7 +126,7 @@ $(BUILD_T)/%: %.c $(LIBRARY) $(HEADER)
 	$(eval FOLDER = $(addprefix $(BUILD_T)/, $(dir $<)))
 	$(eval OUT = $(addprefix $(BUILD_T)/, $(subst .c,,$<)))
 	@mkdir -p $(FOLDER)
-	@echo "compiling $(OUT)"
+	@echo "building test $(notdir $(OUT))"
 	@$(CC) $(LL) $(CC_FLAGS) -o $(OUT) $< -I$(BUILD_I) -L$(BUILD_L) -l$(PROJECT)
 
 .PHONY: clean
