@@ -8,11 +8,11 @@
 
 # Variables
 
-PROJECT = rocketc
-TARGETS = 
-IMPORTS += core/self core/type
-IMPORTS += collections/vector collections/list collections/stack collections/map collections/queue collections/binaryTree
-LINKER = m      # example: pthread m
+
+PROJECT    =     rocketc
+TARGETS    =     ./*.c
+IMPORTS    =     core/* collections/*
+LINKER     =     m
 
 
 # Folders
@@ -32,15 +32,19 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 
 # Files
 
-FILES_C = $(foreach IMPORT, $(IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), ,$S)))
-HEADERS_H = $(foreach IMPORT, $(IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.h), $(if $(findstring /tests/, $S), ,$S)))
-TESTS_C = $(foreach IMPORT, $(IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), $S)))
+
+ALL_IMPORTS = $(foreach IMPORT,$(IMPORTS), $(wildcard $(IMPORT)))
+ALL_TARGETS = $(foreach TARGET,$(TARGETS), $(wildcard $(TARGET)))
+
+FILES_C = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), ,$S)))
+HEADERS_H = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.h), $(if $(findstring /tests/, $S), ,$S)))
+TESTS_C = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), $S)))
 
 
 # Rules and targets
 
 OBJECTS = $(addprefix $(BUILD_O)/, $(subst .c,.o, $(FILES_C)))
-INCLUDES = $(addprefix -I, $(IMPORTS))
+INCLUDES = $(addprefix -I, $(ALL_IMPORTS))
 HEADERS = $(notdir $(HEADERS_H))
 
 # Auxiliary
@@ -50,7 +54,7 @@ HEADER_NAME = $(addsuffix .h, $(PROJECT))
 LIBRARY = $(addprefix $(BUILD_L)/, $(LIBRARY_NAME))
 HEADER = $(addprefix $(BUILD_I)/, $(HEADER_NAME))
 TESTS = $(addprefix $(BUILD_T)/, $(subst .c,, $(TESTS_C)))
-EXECUTABLES = $(addprefix $(BUILD_B)/, $(subst .c,, $(TARGETS)))
+EXECUTABLES = $(addprefix $(BUILD_B)/, $(subst .c,, $(ALL_TARGETS)))
 
 
 # Compiler
@@ -72,6 +76,7 @@ $(BUILD_B)/%: %.c $(LIBRARY) $(HEADER)
 	$(eval OUT = $(addprefix $(BUILD_B)/, $(subst .c,,$<)))
 	@mkdir -p $(FOLDER)
 	@$(CC) $(LL) $(CC_FLAGS) -o $(OUT) -L$(BUILD_L) -I$(BUILD_I)/ $< -l$(PROJECT)
+	@cp $(OUT) .
 
 # Library
 
@@ -122,3 +127,4 @@ $(BUILD_T)/%: %.c $(LIBRARY) $(HEADER)
 .PHONY: clean
 clean:
 	rm -rf $(BUILD)
+	rm -rf $(notdir $(EXECUTABLES))
