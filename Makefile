@@ -131,5 +131,4 @@ $(BUILD_T)/%: %.c $(LIBRARY) $(HEADER)
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD)
-	rm -rf $(notdir $(EXECUTABLES))
+	rm -rf $(BUILD) $(notdir $(EXECUTABLES))
