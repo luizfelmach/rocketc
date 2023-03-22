@@ -10,10 +10,10 @@
 
 
 PROJECT    =     rocketc
-TARGETS    =     ./*.c
+TARGETS    =     main.c
+FILES      =     ./*.c
 IMPORTS    =     core/* collections/*
 LINKER     =     m
-
 
 # Folders
 
@@ -36,7 +36,13 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 ALL_IMPORTS = $(foreach IMPORT,$(IMPORTS), $(wildcard $(IMPORT)))
 ALL_TARGETS = $(foreach TARGET,$(TARGETS), $(wildcard $(TARGET)))
 
+
+FILES_TEMP = $(filter-out $(ALL_TARGETS), $(wildcard $(FILES)))
+
+$(info $(wildcard $(FILES)))
+
 FILES_C = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), ,$S)))
+FILES_C += $(FILES_TEMP)
 HEADERS_H = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.h), $(if $(findstring /tests/, $S), ,$S)))
 TESTS_C = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), $S)))
 
