@@ -1,43 +1,56 @@
+#include <metadata.h>
 #include <self.h>
 #include <stdlib.h>
 #include <vector.h>
 
 struct _vector {
     generic *data;
-    Self     self;
-    size_t   last, capacity;
+    int      last, capacity;
 };
 
-Vector vectorNew(Self self) {
-    Vector vector    = calloc(1, sizeof(struct _vector));
-    vector->self     = self;
-    vector->capacity = 100;
-    vector->data     = calloc(vector->capacity, sizeof(generic));
-    return vector;
+void destroy(void *ptr) {
+    Vector v = ptr;
+    int    i;
+    for (i = 0; i < v->last; i++) {
+        metadata_destroy(v->data[i]);
+    }
+    free(v->data);
 }
 
-generic vectorAt(Vector vector, size_t index) {
+Vector vector() {
+    Self vector     = self_new("vector");
+    vector->destroy = destroy;
+
+    Vector v    = metadata_new(vector, sizeof(struct _vector));
+    v->capacity = 100;
+    v->last     = 0;
+    v->data     = calloc(v->capacity, sizeof(generic));
+
+    return v;
+}
+
+generic vector_at(Vector vector, int index) {
     if (vector->last <= index) {
         return NULL;
     }
     return vector->data[index];
 }
 
-generic vectorFront(Vector vector) {
+generic vector_front(Vector vector) {
     if (!vector->last) {
         return NULL;
     }
     return vector->data[0];
 }
 
-generic vectorBack(Vector vector) {
+generic vector_back(Vector vector) {
     if (!vector->last) {
         return NULL;
     }
     return vector->data[vector->last - 1];
 }
 
-void vectorPush(Vector vector, generic data) {
+void vector_push(Vector vector, generic data) {
     if (vector->last == vector->capacity) {
         vector->capacity *= 2;
         vector->data = realloc(vector->data, vector->capacity * sizeof(generic));
@@ -45,65 +58,55 @@ void vectorPush(Vector vector, generic data) {
     vector->data[vector->last++] = data;
 }
 
-void vectorPop(Vector vector) {
+void vector_pop(Vector vector) {
     if (!vector->last) {
         return;
     }
-    vector->self->destroy(vector->data[--vector->last]);
+    metadata_destroy(vector->data[--vector->last]);
 }
 
-void vectorClear(Vector vector) {
-    size_t i, size = vector->last;
+void vector_clear(Vector vector) {
+    int i, size = vector->last;
     for (i = 0; i < size; i++) {
-        vectorPop(vector);
+        vector_pop(vector);
     }
 }
 
-size_t vectorSize(Vector vector) {
+int vector_size(Vector vector) {
     return vector->last;
 }
 
-generic vectorFind(Vector vector, generic data) {
+generic vector_find(Vector vector, generic data) {
     generic target = NULL;
-    size_t  i;
+    int     i;
     for (i = 0; i < vector->last; i++) {
-        if (!vector->self->compare(data, vector->data[i])) {
-            target = vector->data[i];
-            break;
-        }
+        // if (!vector->self->compare(data, vector->data[i])) {
+        //     target = vector->data[i];
+        //     break;
+        // }
     }
-    vector->self->destroy(data);
+    metadata_destroy(data);
     return target;
 }
 
-int vectorIndexOf(Vector vector, generic data) {
-    int    target = -1;
-    size_t i;
+int vector_index_of(Vector vector, generic data) {
+    int target = -1;
+    int i;
     for (i = 0; i < vector->last; i++) {
-        if (!vector->self->compare(data, vector->data[i])) {
-            target = (int)i;
-            break;
-        }
+        // if (!vector->self->compare(data, vector->data[i])) {
+        //     target = (int)i;
+        //     break;
+        // }
     }
-    vector->self->destroy(data);
+    metadata_destroy(data);
     return target;
 }
 
-void vectorSwap(Vector vector, size_t a, size_t b) {
+void vector_swap(Vector vector, int a, int b) {
     if (a >= vector->last || b >= vector->last) {
         return;
     }
-    generic target  = vectorAt(vector, a);
+    generic target  = vector_at(vector, a);
     vector->data[a] = vector->data[b];
     vector->data[b] = target;
-}
-
-void vectorDestroy(Vector vector) {
-    size_t i;
-    for (i = 0; i < vector->last; i++) {
-        vector->self->destroy(vector->data[i]);
-    }
-    self_destroy(vector->self);
-    free(vector->data);
-    free(vector);
 }

@@ -2,33 +2,22 @@
 #include <stdio.h>
 
 int main() {
-    Vector v = vectorNew(i32Self());
+    smart Vector v = vector();
 
-    int i;
-    for (i = 0; i < 10; i++) {
-        vectorPush(v, i32New(i));
-    }
+    vector_push(v, i32(100));
+    vector_push(v, str("luiz"));
+    vector_push(v, vector());
 
-    printf("vector size: %lu\n", vectorSize(v));
-    printf("index of 100: %d\n", vectorIndexOf(v, i32New(100)));
-    printf("index of -10: %d\n", vectorIndexOf(v, i32New(-10)));
-    printf("index of 2: %d\n", vectorIndexOf(v, i32New(2)));
+    printf("%d\n", *(int *)vector_at(v, 0));
+    printf("%s\n", (char *)vector_at(v, 1));
 
-    int *value = vectorFind(v, i32New(8));
-    if (value) {
-        printf("vector find 8: %d\n", *value);
-    }
+    Vector inside = vector_at(v, 2);
 
-    printf("front: %d\n", *(int *)vectorFront(v));
-    printf("back: %d\n", *(int *)vectorBack(v));
+    vector_push(inside, i32(10));
+    vector_push(inside, i32(10));
+    vector_push(inside, i32(10));
 
-    vectorPop(v);
+    printf("%d\n", vector_size(inside));
 
-    printf("front: %d\n", *(int *)vectorFront(v));
-    printf("back: %d\n", *(int *)vectorBack(v));
-
-    vectorClear(v);
-
-    vectorDestroy(v);
     return 0;
 }
