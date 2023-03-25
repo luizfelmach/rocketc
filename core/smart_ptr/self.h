@@ -1,15 +1,15 @@
 #ifndef SELF_H
 #define SELF_H
 
-typedef void (*print_fn)(void *);
 typedef int (*compare_fn)(void *, void *);
 typedef void (*destroy_fn)(void *);
+typedef char *(*to_string_fn)(void *);
 
 struct _self {
-    char       type_name[256];
-    print_fn   print;
-    compare_fn compare;
-    destroy_fn destroy;
+    char         type_name[256];
+    compare_fn   compare;
+    destroy_fn   destroy;
+    to_string_fn to_string;
 };
 
 typedef struct _self *Self;

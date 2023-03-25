@@ -79,11 +79,12 @@ int vector_size(Vector vector) {
 generic vector_find(Vector vector, generic data) {
     generic target = NULL;
     int     i;
+    Meta    m = metadata_get(data);
     for (i = 0; i < vector->last; i++) {
-        // if (!vector->self->compare(data, vector->data[i])) {
-        //     target = vector->data[i];
-        //     break;
-        // }
+        if (!m->self->compare(data, vector->data[i])) {
+            target = vector->data[i];
+            break;
+        }
     }
     metadata_destroy(data);
     return target;
@@ -93,10 +94,11 @@ int vector_index_of(Vector vector, generic data) {
     int target = -1;
     int i;
     for (i = 0; i < vector->last; i++) {
-        // if (!vector->self->compare(data, vector->data[i])) {
-        //     target = (int)i;
-        //     break;
-        // }
+        Meta m = metadata_get(vector->data[i]);
+        if (!m->self->compare(data, vector->data[i])) {
+            target = (int)i;
+            break;
+        }
     }
     metadata_destroy(data);
     return target;
