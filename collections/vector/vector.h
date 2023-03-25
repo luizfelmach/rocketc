@@ -17,6 +17,5 @@ int     vector_size(Vector vector);
 generic vector_find(Vector vector, generic data);
 int     vector_index_of(Vector vector, generic data);
 void    vector_swap(Vector vector, int a, int b);
-void    vector_destroy(Vector vector);
 
 #endif  // VECTOR_H

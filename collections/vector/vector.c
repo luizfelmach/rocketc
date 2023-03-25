@@ -8,7 +8,7 @@ struct _vector {
     int      last, capacity;
 };
 
-void destroy(void *ptr) {
+void vector_destroy(void *ptr) {
     Vector v = ptr;
     int    i;
     for (i = 0; i < v->last; i++) {
@@ -19,7 +19,7 @@ void destroy(void *ptr) {
 
 Vector vector() {
     Self vector     = self_new("vector");
-    vector->destroy = destroy;
+    vector->destroy = vector_destroy;
 
     Vector v    = metadata_new(vector, sizeof(struct _vector));
     v->capacity = 100;
