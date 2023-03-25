@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-Self selfNew(char *typeName) {
+Self self_new(char *type_name) {
     Self self = (Self)calloc(1, sizeof(struct _self));
-    strcpy(self->typeName, typeName);
+    strcpy(self->type_name, type_name);
     return self;
 }
 
-void selfDestroy(Self self) {
+void self_destroy(Self self) {
     free(self);
 }

@@ -103,7 +103,7 @@ void vectorDestroy(Vector vector) {
     for (i = 0; i < vector->last; i++) {
         vector->self->destroy(vector->data[i]);
     }
-    selfDestroy(vector->self);
+    self_destroy(vector->self);
     free(vector->data);
     free(vector);
 }
