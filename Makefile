@@ -132,6 +132,11 @@ $(BUILD_T)/%: %.c $(LIBRARY) $(HEADER)
 	@echo "building test $(notdir $(OUT))"
 	@$(CC) $(LL) $(CC_FLAGS) -o $(OUT) $< -I$(BUILD_I) -L$(BUILD_L) -l$(PROJECT)
 
+
 .PHONY: clean
 clean:
+	rm -rf $(LIBRARY) $(OBJECTS) $(TESTS) $(EXECUTABLES) $(notdir $(EXECUTABLES))
+
+.PHONY: cleanall
+cleanall:
 	rm -rf $(BUILD) $(notdir $(EXECUTABLES))
