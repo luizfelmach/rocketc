@@ -1,6 +1,9 @@
 #include <meta.h>
 #include <stdlib.h>
 
+void nothing(void *ptr) {
+}
+
 void *metaNew(Self s, int size) {
     Meta meta   = malloc(sizeof(struct _meta) + (size_t)size);
     meta->self  = s;

@@ -12,6 +12,8 @@ struct _meta {
 
 typedef struct _meta *Meta;
 
+void nothing(void *ptr);
+
 void *metaNew(Self s, int size);
 Meta  metaGet(void *ptr);
 void  metaDestroy(void *ptr);

@@ -1,20 +1,15 @@
+#include <meta.h>
+#include <self.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <str.h>
 #include <string.h>
 
-char *strNew(char *x) {
-    return strdup(x);
-}
-
-void strPrint(void *x) {
-    printf("%s", (char *)x);
-}
-
-Self strSelf() {
+char *str(char *x) {
     Self str     = selfNew("str");
-    str->destroy = free;
-    str->compare = (compareFn)strcmp;
-    str->print   = (printFn)strPrint;
-    return str;
+    str->destroy = nothing;
+
+    char *ptr = metaNew(str, sizeof(char) * (strlen(x) + 1));
+    strcpy(ptr, x);
+
+    return ptr;
 }
