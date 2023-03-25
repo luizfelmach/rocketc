@@ -38,9 +38,6 @@ ALL_TARGETS = $(foreach TARGET,$(TARGETS), $(wildcard $(TARGET)))
 
 
 FILES_TEMP = $(filter-out $(ALL_TARGETS), $(wildcard $(FILES)))
-
-$(info $(wildcard $(FILES)))
-
 FILES_C = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.c), $(if $(findstring /tests/, $S), ,$S)))
 FILES_C += $(FILES_TEMP)
 HEADERS_H = $(foreach IMPORT, $(ALL_IMPORTS), $(foreach S, $(call rwildcard, $(IMPORT), *.h), $(if $(findstring /tests/, $S), ,$S)))
