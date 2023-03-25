@@ -6,8 +6,8 @@ int main() {
     smart float* b = f32(3.14159);
     smart char*  c = str("Luiz Felipe Machado");
 
-    printf("int: %d\n", *a);
-    printf("float: %.2f\n", *b);
+    printf("i32: %d\n", *a);
+    printf("f32: %.2f\n", *b);
     printf("str: %s\n", c);
 
     return 0;
