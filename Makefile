@@ -65,7 +65,7 @@ EXECUTABLES = $(addprefix $(BUILD_B)/, $(subst .c,, $(ALL_TARGETS)))
 CC = gcc
 AR = ar
 LL = $(addprefix -l, $(LINKER))
-CC_FLAGS += -O2 -Wall -Wextra -pedantic -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wlogical-op -Wshift-overflow=2 -Wduplicated-cond -Wcast-qual -Wcast-align
+CC_FLAGS += -Wall
 DEBUG_FLAGS += -g -fsanitize=address -fsanitize=undefined -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize-recover=all -fstack-protector-all -D_FORTIFY_SOURCE=2 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC
 
 ifeq ($(DEBUG),true)
