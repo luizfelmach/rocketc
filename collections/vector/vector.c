@@ -13,7 +13,7 @@ void vector_destroy(void *ptr) {
     Vector v = ptr;
     int    i;
     for (i = 0; i < v->last; i++) {
-        del(v->data[i]);
+        del(&v->data[i]);
     }
     free(v->data);
 }
@@ -44,11 +44,22 @@ int vector_compare(void *a, void *b) {
     return 0;
 }
 
+void *vector_it_begin(void *x) {
+    Vector v = x;
+    return v->data;
+}
+
+void *vector_it(void *x, int i) {
+    return (void **)x + i;
+}
+
 Vector vector() {
-    Self vector     = self_new("vector");
-    vector->destroy = vector_destroy;
-    vector->clone   = vector_clone;
-    vector->compare = vector_compare;
+    Self vector      = self_new("vector");
+    vector->destroy  = vector_destroy;
+    vector->clone    = vector_clone;
+    vector->compare  = vector_compare;
+    vector->it       = vector_it;
+    vector->it_begin = vector_it_begin;
 
     Vector v    = metadata_new(vector, sizeof(struct _vector));
     v->capacity = 100;
@@ -91,7 +102,7 @@ void vector_pop(Vector vector) {
     if (!vector->last) {
         return;
     }
-    del(vector->data[--vector->last]);
+    del(&vector->data[--vector->last]);
 }
 
 void vector_clear(Vector vector) {
@@ -114,7 +125,7 @@ void *vector_find(Vector vector, void *data) {
             break;
         }
     }
-    del(data);
+    del(&data);
     return target;
 }
 
@@ -127,7 +138,7 @@ int vector_index_of(Vector vector, void *data) {
             break;
         }
     }
-    del(data);
+    del(&data);
     return target;
 }
 
