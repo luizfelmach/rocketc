@@ -18,7 +18,7 @@ int main() {
 
     vector_clear(v);
 
-    printf("size: %d\n", vector_size(v));
+    printf("size: %d\n", len(v));
 
     return 0;
 }

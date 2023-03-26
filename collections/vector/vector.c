@@ -30,8 +30,8 @@ void *vector_clone(void *ptr) {
 
 int vector_compare(void *a, void *b) {
     Vector v1 = a, v2 = b;
-    if (vector_size(v1) != vector_size(v2)) {
-        return vector_size(v1) - vector_size(v2);
+    if (len(v1) != len(v2)) {
+        return len(v1) - len(v2);
     }
 
     int i;
@@ -105,10 +105,6 @@ void vector_clear(Vector vector) {
     for (i = 0; i < size; i++) {
         vector_pop(vector);
     }
-}
-
-int vector_size(Vector vector) {
-    return vector->last;
 }
 
 void *vector_find(Vector vector, void *data) {

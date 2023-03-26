@@ -13,9 +13,9 @@ int main() {
         }
     }
 
-    for (i = 0; i < vector_size(v); i++) {
+    for (i = 0; i < len(v); i++) {
         Vector f = vector_at(v, i);
-        for (j = 0; j < vector_size(f); j++) {
+        for (j = 0; j < len(f); j++) {
             float *value = vector_at(f, j);
             printf("%.2f ", *value);
         }

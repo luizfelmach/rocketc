@@ -11,7 +11,7 @@ int main() {
 
     vector_swap(v, 0, 9);
 
-    for (i = 0; i < vector_size(v); i++) {
+    for (i = 0; i < len(v); i++) {
         int *value = vector_at(v, i);
         printf("%d\n", *value);
     }
