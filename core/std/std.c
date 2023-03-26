@@ -37,3 +37,6 @@ int len(void *x) {
     Meta m = metadata_get(x);
     return m->self->len(x);
 }
+
+void nothing(void *ptr) {
+}

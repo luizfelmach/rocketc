@@ -1,16 +1,17 @@
 #include <metadata.h>
 #include <self.h>
+#include <std.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <types.h>
 
-int strCompare(void *a, void *b) {
+int str_compare(void *a, void *b) {
     char *s1 = a, *s2 = b;
     return strcmp(s1, s2);
 }
 
-void *strClone(void *a) {
+void *str_clone(void *a) {
     char *s = a;
     return str(s);
 }
@@ -22,8 +23,8 @@ int str_len(void *x) {
 char *str(char *x) {
     Self str     = self_new("str");
     str->destroy = nothing;
-    str->compare = strCompare;
-    str->clone   = strClone;
+    str->compare = str_compare;
+    str->clone   = str_clone;
     str->len     = str_len;
 
     char *ptr = metadata_new(str, sizeof(char) * (strlen(x) + 1));
