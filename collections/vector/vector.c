@@ -4,8 +4,8 @@
 #include <vector.h>
 
 struct _vector {
-    generic *data;
-    int      last, capacity;
+    void **data;
+    int    last, capacity;
 };
 
 void vector_destroy(void *ptr) {
@@ -24,36 +24,36 @@ Vector vector() {
     Vector v    = metadata_new(vector, sizeof(struct _vector));
     v->capacity = 100;
     v->last     = 0;
-    v->data     = calloc(v->capacity, sizeof(generic));
+    v->data     = calloc(v->capacity, sizeof(void *));
 
     return v;
 }
 
-generic vector_at(Vector vector, int index) {
+void *vector_at(Vector vector, int index) {
     if (vector->last <= index) {
         return NULL;
     }
     return vector->data[index];
 }
 
-generic vector_front(Vector vector) {
+void *vector_front(Vector vector) {
     if (!vector->last) {
         return NULL;
     }
     return vector->data[0];
 }
 
-generic vector_back(Vector vector) {
+void *vector_back(Vector vector) {
     if (!vector->last) {
         return NULL;
     }
     return vector->data[vector->last - 1];
 }
 
-void vector_push(Vector vector, generic data) {
+void vector_push(Vector vector, void *data) {
     if (vector->last == vector->capacity) {
         vector->capacity *= 2;
-        vector->data = realloc(vector->data, vector->capacity * sizeof(generic));
+        vector->data = realloc(vector->data, vector->capacity * sizeof(void *));
     }
     vector->data[vector->last++] = data;
 }
@@ -76,10 +76,10 @@ int vector_size(Vector vector) {
     return vector->last;
 }
 
-generic vector_find(Vector vector, generic data) {
-    generic target = NULL;
-    int     i;
-    Meta    m = metadata_get(data);
+void *vector_find(Vector vector, void *data) {
+    void *target = NULL;
+    int   i;
+    Meta  m = metadata_get(data);
     for (i = 0; i < vector->last; i++) {
         if (!m->self->compare(data, vector->data[i])) {
             target = vector->data[i];
@@ -90,7 +90,7 @@ generic vector_find(Vector vector, generic data) {
     return target;
 }
 
-int vector_index_of(Vector vector, generic data) {
+int vector_index_of(Vector vector, void *data) {
     int target = -1;
     int i;
     for (i = 0; i < vector->last; i++) {
@@ -108,7 +108,7 @@ void vector_swap(Vector vector, int a, int b) {
     if (a >= vector->last || b >= vector->last) {
         return;
     }
-    generic target  = vector_at(vector, a);
+    void *target    = vector_at(vector, a);
     vector->data[a] = vector->data[b];
     vector->data[b] = target;
 }
