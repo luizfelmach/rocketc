@@ -32,3 +32,8 @@ void del(void **x) {
     metadata_destroy(*x);
     *x = NULL;
 }
+
+int len(void *x) {
+    Meta m = metadata_get(x);
+    return m->self->len(x);
+}

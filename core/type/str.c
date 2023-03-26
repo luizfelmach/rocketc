@@ -15,20 +15,16 @@ void *strClone(void *a) {
     return str(s);
 }
 
-void *str_it(void *x, int i) {
-    return (char *)x + i;
-}
-void *str_it_begin(void *x) {
-    return x;
+int str_len(void *x) {
+    return strlen(x);
 }
 
 char *str(char *x) {
-    Self str      = self_new("str");
-    str->destroy  = nothing;
-    str->compare  = strCompare;
-    str->clone    = strClone;
-    str->it       = str_it;
-    str->it_begin = str_it_begin;
+    Self str     = self_new("str");
+    str->destroy = nothing;
+    str->compare = strCompare;
+    str->clone   = strClone;
+    str->len     = str_len;
 
     char *ptr = metadata_new(str, sizeof(char) * (strlen(x) + 1));
     strcpy(ptr, x);
