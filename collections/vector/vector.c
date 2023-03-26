@@ -28,10 +28,27 @@ void *vector_clone(void *ptr) {
     return c;
 }
 
+int vector_compare(void *a, void *b) {
+    Vector v1 = a, v2 = b;
+    if (vector_size(v1) != vector_size(v2)) {
+        return vector_size(v1) - vector_size(v2);
+    }
+
+    int i;
+    for (i = 0; i < v1->last; i++) {
+        if (compare(v1->data[i], v2->data[i])) {
+            return compare(v1->data[i], v2->data[i]);
+        }
+    }
+
+    return 0;
+}
+
 Vector vector() {
     Self vector     = self_new("vector");
     vector->destroy = vector_destroy;
     vector->clone   = vector_clone;
+    vector->compare = vector_compare;
 
     Vector v    = metadata_new(vector, sizeof(struct _vector));
     v->capacity = 100;
