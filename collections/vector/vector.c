@@ -13,7 +13,7 @@ void vector_destroy(void *ptr) {
     Vector v = ptr;
     int    i;
     for (i = 0; i < v->last; i++) {
-        metadata_destroy(v->data[i]);
+        del(v->data[i]);
     }
     free(v->data);
 }
@@ -91,7 +91,7 @@ void vector_pop(Vector vector) {
     if (!vector->last) {
         return;
     }
-    metadata_destroy(vector->data[--vector->last]);
+    del(vector->data[--vector->last]);
 }
 
 void vector_clear(Vector vector) {
@@ -108,14 +108,13 @@ int vector_size(Vector vector) {
 void *vector_find(Vector vector, void *data) {
     void *target = NULL;
     int   i;
-    Meta  m = metadata_get(data);
     for (i = 0; i < vector->last; i++) {
-        if (!m->self->compare(data, vector->data[i])) {
+        if (!compare(data, vector->data[i])) {
             target = vector->data[i];
             break;
         }
     }
-    metadata_destroy(data);
+    del(data);
     return target;
 }
 
@@ -123,13 +122,12 @@ int vector_index_of(Vector vector, void *data) {
     int target = -1;
     int i;
     for (i = 0; i < vector->last; i++) {
-        Meta m = metadata_get(vector->data[i]);
-        if (!m->self->compare(data, vector->data[i])) {
+        if (!compare(data, vector->data[i])) {
             target = (int)i;
             break;
         }
     }
-    metadata_destroy(data);
+    del(data);
     return target;
 }
 
