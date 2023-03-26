@@ -4,12 +4,14 @@
 typedef int (*compare_fn)(void *, void *);
 typedef void (*destroy_fn)(void *);
 typedef char *(*to_string_fn)(void *);
+typedef void *(*clone_fn)(void *);
 
 struct _self {
     char         type_name[256];
     compare_fn   compare;
     destroy_fn   destroy;
     to_string_fn to_string;
+    clone_fn     clone;
 };
 
 typedef struct _self *Self;
