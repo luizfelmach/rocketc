@@ -44,11 +44,17 @@ int vector_compare(void *a, void *b) {
     return 0;
 }
 
+int vector_len(void *x) {
+    Vector v = x;
+    return v->last;
+}
+
 Vector vector() {
     Self vector     = self_new("vector");
     vector->destroy = vector_destroy;
     vector->clone   = vector_clone;
     vector->compare = vector_compare;
+    vector->len     = vector_len;
 
     Vector v    = metadata_new(vector, sizeof(struct _vector));
     v->capacity = 100;
