@@ -16,6 +16,9 @@ Meta metadata_get(void *ptr) {
 }
 
 void metadata_destroy(void *ptr) {
+    if (!ptr) {
+        return;
+    }
     Meta meta = metadata_get(ptr);
     meta->self->destroy(meta->value);
     free(meta->self);

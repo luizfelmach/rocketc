@@ -27,3 +27,8 @@ int compare(void *a, void *b) {
 
     return m1->self->compare(a, b);
 }
+
+void del(void **x) {
+    metadata_destroy(*x);
+    *x = NULL;
+}

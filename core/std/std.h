@@ -3,5 +3,6 @@
 
 void *clone(void *x);
 int   compare(void *a, void *b);
+void  del(void *x);
 
 #endif
