@@ -1,5 +1,6 @@
 #include <metadata.h>
 #include <self.h>
+#include <std.h>
 #include <stdlib.h>
 #include <vector.h>
 
@@ -17,9 +18,20 @@ void vector_destroy(void *ptr) {
     free(v->data);
 }
 
+void *vector_clone(void *ptr) {
+    Vector v = ptr;
+    Vector c = vector();
+    int    i;
+    for (i = 0; i < v->last; i++) {
+        vector_push(c, clone(v->data[i]));
+    }
+    return c;
+}
+
 Vector vector() {
     Self vector     = self_new("vector");
     vector->destroy = vector_destroy;
+    vector->clone   = vector_clone;
 
     Vector v    = metadata_new(vector, sizeof(struct _vector));
     v->capacity = 100;
