@@ -1,6 +1,7 @@
 #include <metadata.h>
 #include <self.h>
 #include <std.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,15 +21,23 @@ int str_len(void *x) {
     return strlen(x);
 }
 
-char *str(char *x) {
+char *str(char *x, ...) {
     Self str     = self_new("str");
     str->destroy = nothing;
     str->compare = str_compare;
     str->clone   = str_clone;
     str->len     = str_len;
 
-    char *ptr = metadata_new(str, sizeof(char) * (strlen(x) + 1));
-    strcpy(ptr, x);
+    va_list args;
+    va_start(args, x);
+    int size = vsnprintf(NULL, 0, x, args);
+    va_end(args);
+
+    char *ptr = metadata_new(str, sizeof(char) * (size + 1));
+
+    va_start(args, x);
+    vsprintf(ptr, x, args);
+    va_end(args);
 
     return ptr;
 }
