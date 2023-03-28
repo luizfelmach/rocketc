@@ -14,13 +14,13 @@ int main() {
     *b_clone *= *b_clone;
     c_clone[4] = '_';
 
-    printf("original i32: %d\n", *a);
-    printf("original f32: %.2f\n", *b);
-    printf("original str: %s\n", c);
+    print("original i32: {}\n", a);
+    print("original f32: {}\n", b);
+    print("original str: {}\n", c);
 
-    printf("clone i32: %d\n", *a_clone);
-    printf("clone f32: %.2f\n", *b_clone);
-    printf("clone str: %s\n", c_clone);
+    print("clone i32: {}\n", a_clone);
+    print("clone f32: {}\n", b_clone);
+    print("clone str: {}\n", c_clone);
 
     return 0;
 }
