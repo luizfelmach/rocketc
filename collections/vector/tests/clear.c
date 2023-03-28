@@ -13,8 +13,8 @@ int main() {
     vector_pop(v);
     vector_pop(v);
 
-    printf("front: %d\n", *(int *)vector_front(v));
-    printf("back: %d\n", *(int *)vector_back(v));
+    print("front: {}\n", vector_front(v));
+    print("back: {}\n", vector_back(v));
 
     vector_clear(v);
 

@@ -19,14 +19,7 @@ int main() {
     vector_pop(v_clone);
     vector_pop(v_clone);
 
-    for (i = 0; i < len(v_clone); i++) {
-        Vector f = vector_at(v_clone, i);
-        for (j = 0; j < len(f); j++) {
-            float *value = vector_at(f, j);
-            printf("%.2f ", *value);
-        }
-        printf("\n");
-    }
+    print("{}\n", v_clone);
 
     return 0;
 }

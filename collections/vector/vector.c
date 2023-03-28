@@ -49,12 +49,24 @@ int vector_len(void *x) {
     return v->last;
 }
 
+void vector_print(void *x) {
+    Vector v = x;
+    int    i;
+    print("[");
+    for (i = 0; i < v->last; i++) {
+        print("{}", v->data[i]);
+        if (i != v->last - 1) print(", ");
+    }
+    print("]");
+}
+
 Vector vector() {
     Self vector     = self_new("vector", "");
     vector->destroy = vector_destroy;
     vector->clone   = vector_clone;
     vector->compare = vector_compare;
     vector->len     = vector_len;
+    vector->print   = vector_print;
 
     Vector v    = metadata_new(vector, sizeof(struct _vector));
     v->capacity = 100;

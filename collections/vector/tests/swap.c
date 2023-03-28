@@ -9,12 +9,9 @@ int main() {
         vector_push(v, i32(i));
     }
 
+    print("before: {}\n", v);
     vector_swap(v, 0, 9);
-
-    for (i = 0; i < len(v); i++) {
-        int *value = vector_at(v, i);
-        printf("%d\n", *value);
-    }
+    print("after: {}\n", v);
 
     return 0;
 }

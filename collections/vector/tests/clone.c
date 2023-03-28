@@ -16,15 +16,8 @@ int main() {
         *value *= 3;
     }
 
-    for (i = 0; i < len(v); i++) {
-        int *value = vector_at(v, i);
-        printf("original: %d\n", *value);
-    }
-
-    for (i = 0; i < len(v_clone); i++) {
-        int *value = vector_at(v_clone, i);
-        printf("clone: %d\n", *value);
-    }
+    print("original: {}\n", v);
+    print("clone: {}\n", v_clone);
 
     return 0;
 }
