@@ -21,12 +21,17 @@ int str_len(void *x) {
     return strlen(x);
 }
 
+void str_print(void *x) {
+    printf((char *)format_print(x), (char *)x);
+}
+
 char *str(char *x, ...) {
-    Self str     = self_new("str");
+    Self str     = self_new("str", "%s");
     str->destroy = nothing;
     str->compare = str_compare;
     str->clone   = str_clone;
     str->len     = str_len;
+    str->print   = str_print;
 
     va_list args;
     va_start(args, x);

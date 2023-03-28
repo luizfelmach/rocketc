@@ -1,4 +1,5 @@
 #include <metadata.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,4 +40,39 @@ int len(void *x) {
 }
 
 void nothing(void *ptr) {
+}
+
+void dump(void *x) {
+    Meta m = metadata_get(x);
+    return m->self->print(x);
+}
+
+void set_format_print(void *x, char *fmt) {
+    Meta m = metadata_get(x);
+    self_format_print(m->self, fmt);
+}
+
+char *format_print(void *x) {
+    Meta m = metadata_get(x);
+    return m->self->format_print;
+}
+
+void print(char *fmt, ...) {
+    char   *k = fmt;
+    va_list args;
+
+    va_start(args, fmt);
+
+    while (*k != '\0') {
+        if (*k == '{') {
+            void *arg = va_arg(args, void *);
+            dump(arg);
+            k += 2;
+        } else {
+            printf("%c", *k);
+            k += 1;
+        }
+    }
+
+    va_end(args);
 }
