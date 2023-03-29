@@ -21,13 +21,18 @@ void f32_print(void *x) {
     printf((char *)format_print(x), *(float *)x);
 }
 
+char *f32_to_string(void *x) {
+    return str("%.5f", *(float *)x);
+}
+
 float *f32(float x) {
     Self f32 = self_new("f32", "%.2f");
 
-    f32->destroy = nothing;
-    f32->compare = f32_compare;
-    f32->clone   = f32_clone;
-    f32->print   = f32_print;
+    f32->destroy   = nothing;
+    f32->compare   = f32_compare;
+    f32->clone     = f32_clone;
+    f32->print     = f32_print;
+    f32->to_string = f32_to_string;
 
     float *ptr = metadata_new(f32, sizeof(float));
     *ptr       = x;

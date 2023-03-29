@@ -19,13 +19,18 @@ void i32_print(void *x) {
     printf((char *)format_print(x), *(int *)x);
 }
 
+char *i32_to_string(void *x) {
+    return str("%d", *(int *)x);
+}
+
 int *i32(int x) {
     Self i32 = self_new("i32", "%d");
 
-    i32->destroy = nothing;
-    i32->compare = i32_compare;
-    i32->clone   = i32_clone;
-    i32->print   = i32_print;
+    i32->destroy   = nothing;
+    i32->compare   = i32_compare;
+    i32->clone     = i32_clone;
+    i32->print     = i32_print;
+    i32->to_string = i32_to_string;
 
     int *ptr = metadata_new(i32, sizeof(int));
     *ptr     = x;

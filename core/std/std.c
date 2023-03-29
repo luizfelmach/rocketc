@@ -76,3 +76,12 @@ void print(char *fmt, ...) {
 
     va_end(args);
 }
+
+char *to_string(void *x) {
+    Meta m = metadata_get(x);
+    if (!m->self->to_string) {
+        printf("error: object is not able to string.\n");
+        exit(1);
+    }
+    return m->self->to_string(x);
+}

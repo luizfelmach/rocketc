@@ -12,6 +12,7 @@ void  dump(void *x);
 void  set_format_print(void *x, char *fmt);
 char *format_print(void *x);
 void  print(char *fmt, ...);
+char *to_string(void *x);
 
 #define smart __attribute__((cleanup(free_stack)))
 __attribute__((always_inline)) inline void free_stack(void *ptr) {
