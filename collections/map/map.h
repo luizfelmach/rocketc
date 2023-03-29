@@ -3,6 +3,8 @@
 
 typedef struct _map *Map;
 
-Map map(int n, ...);
+Map   map(int n, ...);
+void *map_get(Map m, void *key);
+void  map_set(Map m, void *key, void *value);
 
 #endif

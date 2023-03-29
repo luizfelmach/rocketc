@@ -9,6 +9,7 @@
 
 struct _map {
     Vector pairs;
+    int    capacity, size;
 };
 
 void map_destroy(void *x) {
@@ -31,6 +32,11 @@ void map_print(void *x) {
     printf("}");
 }
 
+int map_len(void *x) {
+    Map m = x;
+    return len(m->pairs);
+}
+
 Map map(int n, ...) {
     Self map = self_new("map", "");
 
@@ -51,4 +57,11 @@ Map map(int n, ...) {
     va_end(args);
 
     return m;
+}
+
+void *map_get(Map m, void *key) {
+    return NULL;
+}
+
+void map_set(Map m, void *key, void *value) {
 }
