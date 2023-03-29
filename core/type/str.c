@@ -26,7 +26,7 @@ void str_print(void *x) {
 }
 
 char *str(char *x, ...) {
-    Self str     = self_new("str", "%s");
+    Self str     = self_new("str", "'%s'");
     str->destroy = nothing;
     str->compare = str_compare;
     str->clone   = str_clone;
