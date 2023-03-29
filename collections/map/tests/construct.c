@@ -11,7 +11,7 @@ int main() {
         ))
     );
 
-    print("{}\n", student);
+    print("Student: {}\n", student);
 
     return 0;
 }
