@@ -20,7 +20,8 @@ void i32_print(void *x) {
 }
 
 int *i32(int x) {
-    Self i32     = self_new("i32", "%d");
+    Self i32 = self_new("i32", "%d");
+
     i32->destroy = nothing;
     i32->compare = i32_compare;
     i32->clone   = i32_clone;

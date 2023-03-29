@@ -7,13 +7,9 @@
 
 int f32_compare(void *a, void *b) {
     float f1 = *(float *)a, f2 = *(float *)b;
-    if (f1 > f2) {
-        return 1;
-    } else if (f2 > f1) {
-        return -1;
-    } else {
-        return 0;
-    }
+    if (f1 > f2) return 1;
+    if (f1 < f2) return -1;
+    return 0;
 }
 
 void *f32_clone(void *a) {
@@ -26,7 +22,8 @@ void f32_print(void *x) {
 }
 
 float *f32(float x) {
-    Self f32     = self_new("f32", "%.2f");
+    Self f32 = self_new("f32", "%.2f");
+
     f32->destroy = nothing;
     f32->compare = f32_compare;
     f32->clone   = f32_clone;
