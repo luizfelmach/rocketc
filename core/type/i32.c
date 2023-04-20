@@ -23,7 +23,7 @@ char *i32_to_string(void *x) {
     return str("%d", *(int *)x);
 }
 
-int *i32(int x) {
+Self i32_self() {
     Self i32 = self_new("i32", "%d");
 
     i32->destroy   = nothing;
@@ -32,7 +32,11 @@ int *i32(int x) {
     i32->print     = i32_print;
     i32->to_string = i32_to_string;
 
-    int *ptr = metadata_new(i32, sizeof(int));
+    return i32;
+}
+
+int *i32(int x) {
+    int *ptr = metadata_new(i32_self(), sizeof(int));
     *ptr     = x;
 
     return ptr;

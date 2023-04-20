@@ -25,7 +25,7 @@ char *f32_to_string(void *x) {
     return str("%.5f", *(float *)x);
 }
 
-float *f32(float x) {
+Self f32_self() {
     Self f32 = self_new("f32", "%.2f");
 
     f32->destroy   = nothing;
@@ -34,7 +34,11 @@ float *f32(float x) {
     f32->print     = f32_print;
     f32->to_string = f32_to_string;
 
-    float *ptr = metadata_new(f32, sizeof(float));
+    return f32;
+}
+
+float *f32(float x) {
+    float *ptr = metadata_new(f32_self(), sizeof(float));
     *ptr       = x;
 
     return ptr;

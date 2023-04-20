@@ -29,7 +29,7 @@ char *str_to_string(void *x) {
     return str((char *)x);
 }
 
-char *str(char *x, ...) {
+Self str_self() {
     Self str = self_new("str", "'%s'");
 
     str->destroy   = nothing;
@@ -39,12 +39,16 @@ char *str(char *x, ...) {
     str->print     = str_print;
     str->to_string = str_to_string;
 
+    return str;
+}
+
+char *str(char *x, ...) {
     va_list args;
     va_start(args, x);
     int size = vsnprintf(NULL, 0, x, args);
     va_end(args);
 
-    char *ptr = metadata_new(str, sizeof(char) * (size + 1));
+    char *ptr = metadata_new(str_self(), sizeof(char) * (size + 1));
 
     va_start(args, x);
     vsprintf(ptr, x, args);
