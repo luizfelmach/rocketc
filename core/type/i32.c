@@ -1,8 +1,8 @@
 #include <mem.h>
 #include <self.h>
+#include <std.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <std.h>
 #include <types.h>
 
 int i32_compare(void *a, void *b) {
@@ -23,7 +23,7 @@ char *i32_to_string(void *x) {
     return str("%d", *(int *)x);
 }
 
-Self* i32_self() {
+Self *i32_self() {
     Self *i32 = self_new("i32");
 
     i32->destroy   = nothing;

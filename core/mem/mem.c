@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void *memory_new(Self *s, size_t size) {
-    Memory memory   = malloc(sizeof(struct _memory) + size);
+    Memory memory = malloc(sizeof(struct _memory) + size);
     memory->self  = s;
     memory->value = memory + 1;
     return memory->value;

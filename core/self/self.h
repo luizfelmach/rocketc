@@ -8,7 +8,7 @@ typedef void *(*clone_fn)(void *);
 typedef int (*len_fn)(void *);
 typedef void (*print_fn)(void *);
 
-typedef struct  {
+typedef struct {
     char         key[256];
     compare_fn   compare;
     destroy_fn   destroy;

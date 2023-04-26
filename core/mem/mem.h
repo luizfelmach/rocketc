@@ -5,13 +5,13 @@
 #include <stdlib.h>
 
 struct _memory {
-    Self  *self;
+    Self *self;
     void *value;
 };
 
 typedef struct _memory *Memory;
 
-void *memory_new(Self *s, size_t size);
+void  *memory_new(Self *s, size_t size);
 Memory memory_get(void *ptr);
 void   memory_destroy(void *ptr);
 

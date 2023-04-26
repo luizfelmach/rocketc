@@ -61,7 +61,7 @@ void vector_print(void *x) {
 }
 
 Vector vector() {
-    Self *vector     = self_new("vector");
+    Self *vector    = self_new("vector");
     vector->destroy = vector_destroy;
     vector->clone   = vector_clone;
     vector->compare = vector_compare;
