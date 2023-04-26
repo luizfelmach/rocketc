@@ -151,6 +151,10 @@ int vector_index_of(Vector vector, void *data) {
     return target;
 }
 
+int vector_empty(Vector vector) {
+    return !vector->last;
+}
+
 void vector_swap(Vector vector, int a, int b) {
     if (a >= vector->last || b >= vector->last) {
         return;
