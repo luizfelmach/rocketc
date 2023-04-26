@@ -15,5 +15,6 @@ void   vector_clear(Vector vector);
 void  *vector_find(Vector vector, void *data);
 int    vector_index_of(Vector vector, void *data);
 void   vector_swap(Vector vector, int a, int b);
+void   vector_reverse(Vector vector);
 
 #endif  // VECTOR_H

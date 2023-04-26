@@ -159,3 +159,10 @@ void vector_swap(Vector vector, int a, int b) {
     vector->data[a] = vector->data[b];
     vector->data[b] = target;
 }
+
+void vector_reverse(Vector vector) {
+    int l, r;
+    for (l = 0, r = vector->last - 1; l < vector->last / 2; l++, r--) {
+        vector_swap(vector, l, r);
+    }
+}
