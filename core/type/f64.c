@@ -1,4 +1,4 @@
-#include <metadata.h>
+#include <mem.h>
 #include <self.h>
 #include <std.h>
 #include <stdio.h>
@@ -18,15 +18,15 @@ void *f64_clone(void *a) {
 }
 
 void f64_print(void *x) {
-    printf((char *)format_print(x), *(double *)x);
+    printf("%.4lf", *(double *)x);
 }
 
 char *f64_to_string(void *x) {
     return str("%.10lf", *(double *)x);
 }
 
-Self f64_self() {
-    Self f64 = self_new("f64", "%.4lf");
+Self *f64_self() {
+    Self *f64 = self_new("f64");
 
     f64->destroy   = nothing;
     f64->compare   = f64_compare;
@@ -38,7 +38,7 @@ Self f64_self() {
 }
 
 double *f64(double x) {
-    double *ptr = metadata_new(f64_self(), sizeof(double));
+    double *ptr = memory_new(f64_self(), sizeof(double));
     *ptr        = x;
 
     return ptr;

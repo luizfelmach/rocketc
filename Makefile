@@ -12,7 +12,7 @@
 PROJECT    =     rocketc
 TARGETS    =     main.c
 FILES      =     ./*.c
-IMPORTS    =     core/* collections/*
+IMPORTS    =     core/* containers/*
 LINKER     =     m
 
 # Folders

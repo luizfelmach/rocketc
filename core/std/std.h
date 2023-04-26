@@ -1,7 +1,7 @@
 #ifndef STD_H
 #define STD_H
 
-#include <metadata.h>
+#include <mem.h>
 
 void *clone(void *x);
 int   compare(void *a, void *b);
@@ -14,9 +14,10 @@ char *format_print(void *x);
 void  print(char *fmt, ...);
 char *to_string(void *x);
 
-#define smart __attribute__((cleanup(free_stack)))
-__attribute__((always_inline)) inline void free_stack(void *ptr) {
-    metadata_destroy(*(void **)ptr);
-}
+#define or  ||
+#define and &&
+#define not !
+
+typedef enum { True = 1, False = 0 } boolean;
 
 #endif

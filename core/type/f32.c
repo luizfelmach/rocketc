@@ -1,4 +1,4 @@
-#include <metadata.h>
+#include <mem.h>
 #include <self.h>
 #include <std.h>
 #include <stdio.h>
@@ -18,15 +18,15 @@ void *f32_clone(void *a) {
 }
 
 void f32_print(void *x) {
-    printf((char *)format_print(x), *(float *)x);
+    printf("%.2f", *(float *)x);
 }
 
 char *f32_to_string(void *x) {
     return str("%.5f", *(float *)x);
 }
 
-Self f32_self() {
-    Self f32 = self_new("f32", "%.2f");
+Self *f32_self() {
+    Self *f32 = self_new("f32");
 
     f32->destroy   = nothing;
     f32->compare   = f32_compare;
@@ -38,7 +38,7 @@ Self f32_self() {
 }
 
 float *f32(float x) {
-    float *ptr = metadata_new(f32_self(), sizeof(float));
+    float *ptr = memory_new(f32_self(), sizeof(float));
     *ptr       = x;
 
     return ptr;

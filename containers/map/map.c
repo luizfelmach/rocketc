@@ -1,5 +1,5 @@
 #include <map.h>
-#include <metadata.h>
+#include <mem.h>
 #include <pair.h>
 #include <self.h>
 #include <std.h>
@@ -38,12 +38,12 @@ int map_len(void *x) {
 }
 
 Map map(int n, ...) {
-    Self map = self_new("map", "");
+    Self *map = self_new("map");
 
     map->destroy = map_destroy;
     map->print   = map_print;
 
-    Map m    = metadata_new(map, sizeof(struct _map));
+    Map m    = memory_new(map, sizeof(struct _map));
     m->pairs = vector();
 
     va_list args;

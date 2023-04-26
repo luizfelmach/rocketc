@@ -1,4 +1,4 @@
-#include <metadata.h>
+#include <mem.h>
 #include <self.h>
 #include <std.h>
 #include <stdarg.h>
@@ -22,15 +22,15 @@ int str_len(void *x) {
 }
 
 void str_print(void *x) {
-    printf((char *)format_print(x), (char *)x);
+    printf("'%s'", (char *)x);
 }
 
 char *str_to_string(void *x) {
     return str((char *)x);
 }
 
-Self str_self() {
-    Self str = self_new("str", "'%s'");
+Self *str_self() {
+    Self *str = self_new("str");
 
     str->destroy   = nothing;
     str->compare   = str_compare;
@@ -48,7 +48,7 @@ char *str(char *x, ...) {
     int size = vsnprintf(NULL, 0, x, args);
     va_end(args);
 
-    char *ptr = metadata_new(str_self(), sizeof(char) * (size + 1));
+    char *ptr = memory_new(str_self(), sizeof(char) * (size + 1));
 
     va_start(args, x);
     vsprintf(ptr, x, args);

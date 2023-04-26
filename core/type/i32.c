@@ -1,8 +1,8 @@
-#include <metadata.h>
+#include <mem.h>
 #include <self.h>
-#include <std.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <std.h>
 #include <types.h>
 
 int i32_compare(void *a, void *b) {
@@ -16,15 +16,15 @@ void *i32_clone(void *a) {
 }
 
 void i32_print(void *x) {
-    printf((char *)format_print(x), *(int *)x);
+    printf("%d", *(int *)x);
 }
 
 char *i32_to_string(void *x) {
     return str("%d", *(int *)x);
 }
 
-Self i32_self() {
-    Self i32 = self_new("i32", "%d");
+Self* i32_self() {
+    Self *i32 = self_new("i32");
 
     i32->destroy   = nothing;
     i32->compare   = i32_compare;
@@ -36,7 +36,7 @@ Self i32_self() {
 }
 
 int *i32(int x) {
-    int *ptr = metadata_new(i32_self(), sizeof(int));
+    int *ptr = memory_new(i32_self(), sizeof(int));
     *ptr     = x;
 
     return ptr;

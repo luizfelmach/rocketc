@@ -1,4 +1,4 @@
-#include <metadata.h>
+#include <mem.h>
 #include <self.h>
 #include <std.h>
 #include <stdlib.h>
@@ -61,14 +61,14 @@ void vector_print(void *x) {
 }
 
 Vector vector() {
-    Self vector     = self_new("vector", "");
+    Self *vector     = self_new("vector");
     vector->destroy = vector_destroy;
     vector->clone   = vector_clone;
     vector->compare = vector_compare;
     vector->len     = vector_len;
     vector->print   = vector_print;
 
-    Vector v    = metadata_new(vector, sizeof(struct _vector));
+    Vector v    = memory_new(vector, sizeof(struct _vector));
     v->capacity = 100;
     v->last     = 0;
     v->data     = calloc(v->capacity, sizeof(void *));

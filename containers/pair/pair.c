@@ -1,4 +1,4 @@
-#include <metadata.h>
+#include <mem.h>
 #include <pair.h>
 #include <self.h>
 #include <std.h>
@@ -34,14 +34,14 @@ int pair_compare(void *a, void *b) {
 }
 
 Pair pair(void *a, void *b) {
-    Self pair = self_new("pair", "");
+    Self *pair = self_new("pair");
 
     pair->destroy = pair_destroy;
     pair->print   = pair_print;
     pair->clone   = pair_clone;
     pair->compare = pair_compare;
 
-    Pair p = metadata_new(pair, sizeof(struct _pair));
+    Pair p = memory_new(pair, sizeof(struct _pair));
     p->a   = a;
     p->b   = b;
 
