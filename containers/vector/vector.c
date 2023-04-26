@@ -60,15 +60,21 @@ void vector_print(void *x) {
     print("]");
 }
 
-Vector vector() {
-    Self *vector    = self_new("vector");
+Self *vector_self() {
+    Self *vector = self_new("vector");
+
     vector->destroy = vector_destroy;
     vector->clone   = vector_clone;
     vector->compare = vector_compare;
     vector->len     = vector_len;
     vector->print   = vector_print;
 
-    Vector v    = memory_new(vector, sizeof(struct _vector));
+    return vector;
+}
+
+Vector vector() {
+    Vector v = memory_new(vector_self(), sizeof(struct _vector));
+
     v->capacity = 100;
     v->last     = 0;
     v->data     = calloc(v->capacity, sizeof(void *));
