@@ -19,5 +19,6 @@ typedef struct {
 } Self;
 
 Self *self_new(char *key);
+int   self_exists(void *ptr);
 
 #endif  // SELF_H

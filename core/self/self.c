@@ -33,3 +33,13 @@ Self *self_new(char *key) {
 
     return s;
 }
+
+int self_exists(void *ptr) {
+    int i;
+    for (i = 0; i < last_self; i++) {
+        if (ptr == &self[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
