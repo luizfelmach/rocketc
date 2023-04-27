@@ -1,5 +1,8 @@
 #include <mem.h>
 #include <stdlib.h>
+#include <nil.h>
+
+static struct _memory nil_memory;
 
 void *memory_new(Self *s, size_t size) {
     Memory memory = malloc(sizeof(struct _memory) + size);
@@ -9,6 +12,11 @@ void *memory_new(Self *s, size_t size) {
 }
 
 Memory memory_get(void *ptr) {
+    if (!ptr) {
+        nil_memory.self = nil();
+        nil_memory.value = NULL;
+        return &nil_memory;
+    }
     return ptr - sizeof(struct _memory);
 }
 

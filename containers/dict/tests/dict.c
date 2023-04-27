@@ -21,8 +21,9 @@ int main() {
     int *year = dict_get(student, str("year"));
     *year = 2023;
 
-    print("{}\n\n", student);
+    print("{}\n", student);
     print("{}\n", student_clone);
+    print("{}\n", dict_get(student, str("ksdljfjksdf")));
 
     return 0;
 }
