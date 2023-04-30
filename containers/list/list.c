@@ -3,6 +3,7 @@
 #include <node.h>
 #include <self.h>
 #include <std.h>
+#include <stdio.h>
 
 struct _list {
     int  size;
@@ -71,73 +72,97 @@ void *list_back(List list) {
 }
 
 void list_push_front(List list, void *data) {
-    Node new_node = node_new(data, list->head);
-
+    list->head = node_new(data, list->head);
     if (list->size == 0) {
-        list->tail = new_node;
+        list->tail = list->head;
     }
-
-    list->head = new_node;
-
     list->size += 1;
 }
 
 void *list_pop_front(List list) {
-    if (list->size == 0) {
-        return NULL;
+    if (!list->head) {
+        printf("error: list is empty\n");
+        exit(1);
     }
+    void *data = list->head->value;
+
+    Node n     = list->head;
+    list->head = list->head->next;
+    node_destroy(n);
 
     if (list->size == 1) {
-        list->tail = NULL;
+        list->tail = list->head;
     }
-
-    void *value = list->head->value;
-
-    Node cur_head = list->head;
-
-    list->head = list->head->next;
-    node_destroy(cur_head);
-
     list->size -= 1;
 
-    return value;
+    return data;
 }
 
 void list_push_back(List list, void *data) {
-    Node new_node = node_new(data, NULL);
+    Node n = node_new(data, NULL);
 
     if (list->size == 0) {
-        list->tail = list->head = new_node;
+        list->head = list->tail = n;
     } else {
-        list->tail = list->tail->next = new_node;
+        list->tail = list->tail->next = n;
     }
 
     list->size += 1;
 }
 
 void *list_pop_back(List list) {
-    return NULL;
+    void *data = NULL;
+
+    if (!list->head) {
+        printf("error: list is empty\n");
+        exit(1);
+    }
+
+    if (list->size == 1) {
+        data = list->head->value;
+        node_destroy(list->head);
+        list->head = list->tail = NULL;
+    }
+
+    Node current  = list->head;
+    Node previous = NULL;
+
+    while (current) {
+        if (current->next == NULL) {
+            previous->next = NULL;
+            data           = current->value;
+            node_destroy(current);
+            list->tail = previous;
+            break;
+        }
+        previous = current;
+        current  = current->next;
+    }
+
+    list->size -= 1;
+
+    return data;
 }
 
 void list_clear(List list) {
     int size = list->size;
     int i;
     for (i = 0; i < size; i++) {
-        void *value = list_pop_front(list);
-        del(&value);
+        void *data = list_pop_front(list);
+        del(&data);
     }
 }
 
 void *list_find(List list, void *data) {
-    void *target = NULL;
-    Node  cur    = list->head;
+    void *target  = NULL;
+    Node  current = list->head;
 
-    while (cur) {
-        if (!compare(cur->value, data)) {
-            target = cur->value;
+    while (current) {
+        if (!compare(current->value, data)) {
+            target = current->value;
             break;
         }
-        cur = cur->next;
+        current = current->next;
     }
     del(&data);
 
