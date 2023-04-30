@@ -8,12 +8,12 @@
 #include <vector.h>
 
 struct _dict {
-    Vector pairs;
+    Vector data;
 };
 
 void dict_destroy(void *x) {
     Dict d = x;
-    del(&d->pairs);
+    del(&d->data);
 }
 
 void dict_print(void *x) {
@@ -21,24 +21,24 @@ void dict_print(void *x) {
 
     printf("{");
     int i;
-    for (i = 0; i < len(d->pairs); i++) {
-        Pair p = vector_at(d->pairs, i);
+    for (i = 0; i < len(d->data); i++) {
+        Pair p = vector_at(d->data, i);
         print("{}: {}", pair_first(p), pair_second(p));
-        if (i < len(d->pairs) - 1) print(", ");
+        if (i < len(d->data) - 1) print(", ");
     }
     printf("}");
 }
 
 int dict_len(void *x) {
     Dict d = x;
-    return len(d->pairs);
+    return len(d->data);
 }
 
 void *dict_clone(void *x) {
     Dict d = x;
     Dict c = dict(0);
-    del(&c->pairs);
-    c->pairs = clone(d->pairs);
+    del(&c->data);
+    c->data = clone(d->data);
     return c;
 }
 
@@ -54,15 +54,15 @@ Self *self_dict() {
 }
 
 Dict dict(int n, ...) {
-    Dict m   = memory_new(self_dict(), sizeof(struct _dict));
-    m->pairs = vector();
+    Dict m  = memory_new(self_dict(), sizeof(struct _dict));
+    m->data = vector();
 
     va_list args;
     va_start(args, n);
 
     int i;
     for (i = 0; i < n; i++) {
-        vector_push(m->pairs, va_arg(args, void *));
+        vector_push(m->data, va_arg(args, void *));
     }
 
     va_end(args);
@@ -74,8 +74,8 @@ void *dict_get(Dict d, void *key) {
     void *target = NULL;
 
     int i;
-    for (i = 0; i < len(d->pairs); i++) {
-        Pair p = vector_at(d->pairs, i);
+    for (i = 0; i < len(d->data); i++) {
+        Pair p = vector_at(d->data, i);
         if (!compare(key, pair_first(p))) {
             target = pair_second(p);
             break;
