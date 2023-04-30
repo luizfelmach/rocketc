@@ -7,13 +7,13 @@
 
 struct _list {
     int  size;
-    Node head, tail;
+    Node_List head, tail;
 };
 
 void list_print(void *x) {
     List list = x;
 
-    Node cur = list->head;
+    Node_List cur = list->head;
 
     print("[");
     while (cur) {
@@ -32,11 +32,11 @@ int list_len(void *x) {
 void list_destroy(void *x) {
     List list = x;
 
-    Node cur = list->head;
+    Node_List cur = list->head;
     while (cur) {
-        Node aux = cur->next;
+        Node_List aux = cur->next;
         del(&cur->value);
-        node_destroy(cur);
+        node_list_destroy(cur);
         cur = aux;
     }
 }
@@ -72,7 +72,7 @@ void *list_back(List list) {
 }
 
 void list_push_front(List list, void *data) {
-    list->head = node_new(data, list->head);
+    list->head = node_list_new(data, list->head);
     if (list->size == 0) {
         list->tail = list->head;
     }
@@ -86,9 +86,9 @@ void *list_pop_front(List list) {
     }
     void *data = list->head->value;
 
-    Node n     = list->head;
+    Node_List n     = list->head;
     list->head = list->head->next;
-    node_destroy(n);
+    node_list_destroy(n);
 
     if (list->size == 1) {
         list->tail = list->head;
@@ -99,7 +99,7 @@ void *list_pop_front(List list) {
 }
 
 void list_push_back(List list, void *data) {
-    Node n = node_new(data, NULL);
+    Node_List n = node_list_new(data, NULL);
 
     if (list->size == 0) {
         list->head = list->tail = n;
@@ -120,18 +120,18 @@ void *list_pop_back(List list) {
 
     if (list->size == 1) {
         data = list->head->value;
-        node_destroy(list->head);
+        node_list_destroy(list->head);
         list->head = list->tail = NULL;
     }
 
-    Node current  = list->head;
-    Node previous = NULL;
+    Node_List current  = list->head;
+    Node_List previous = NULL;
 
     while (current) {
         if (current->next == NULL) {
             previous->next = NULL;
             data           = current->value;
-            node_destroy(current);
+            node_list_destroy(current);
             list->tail = previous;
             break;
         }
@@ -155,7 +155,7 @@ void list_clear(List list) {
 
 void *list_find(List list, void *data) {
     void *target  = NULL;
-    Node  current = list->head;
+    Node_List  current = list->head;
 
     while (current) {
         if (!compare(current->value, data)) {
