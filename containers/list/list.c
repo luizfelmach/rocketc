@@ -96,9 +96,12 @@ void *list_pop_front(List l) {
     void     *data = l->head->value;
     Node_List n    = l->head;
     l->head        = l->head->next;
-    l->head->prev  = NULL;
     l->size -= 1;
     node_list_destroy(n);
+
+    if (l->head) {
+        l->head->prev = NULL;
+    }
 
     if (l->size == 0) {
         l->tail = l->head;
