@@ -9,7 +9,7 @@ int main() {
     queue_push(q, f32(2.1));
 
     queue_pop(q);
-    queue_pop(q);
+    // queue_pop(q);
     // queue_pop(q);
 
     print("{}\n", q);
