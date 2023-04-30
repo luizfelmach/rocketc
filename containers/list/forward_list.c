@@ -6,14 +6,14 @@
 #include <stdio.h>
 
 struct _forward_list {
-    int       size;
-    Node_List head, tail;
+    int               size;
+    Node_Forward_List head, tail;
 };
 
 void forward_list_print(void *x) {
     Forward_List list = x;
 
-    Node_List cur = list->head;
+    Node_Forward_List cur = list->head;
 
     print("[");
     while (cur) {
@@ -32,11 +32,11 @@ int forward_list_len(void *x) {
 void forward_list_destroy(void *x) {
     Forward_List list = x;
 
-    Node_List cur = list->head;
+    Node_Forward_List cur = list->head;
     while (cur) {
-        Node_List aux = cur->next;
+        Node_Forward_List aux = cur->next;
         del(&cur->value);
-        node_list_destroy(cur);
+        node_forward_list_destroy(cur);
         cur = aux;
     }
 }
@@ -72,7 +72,7 @@ void *forward_list_back(Forward_List list) {
 }
 
 void forward_list_push_front(Forward_List list, void *data) {
-    list->head = node_list_new(data, list->head);
+    list->head = node_forward_list_new(data, list->head);
     if (list->size == 0) {
         list->tail = list->head;
     }
@@ -86,9 +86,9 @@ void *forward_list_pop_front(Forward_List list) {
     }
     void *data = list->head->value;
 
-    Node_List n = list->head;
-    list->head  = list->head->next;
-    node_list_destroy(n);
+    Node_Forward_List n = list->head;
+    list->head          = list->head->next;
+    node_forward_list_destroy(n);
 
     if (list->size == 1) {
         list->tail = list->head;
@@ -99,7 +99,7 @@ void *forward_list_pop_front(Forward_List list) {
 }
 
 void forward_list_push_back(Forward_List list, void *data) {
-    Node_List n = node_list_new(data, NULL);
+    Node_Forward_List n = node_forward_list_new(data, NULL);
 
     if (list->size == 0) {
         list->head = list->tail = n;
@@ -120,18 +120,18 @@ void *forward_list_pop_back(Forward_List list) {
 
     if (list->size == 1) {
         data = list->head->value;
-        node_list_destroy(list->head);
+        node_forward_list_destroy(list->head);
         list->head = list->tail = NULL;
     }
 
-    Node_List current  = list->head;
-    Node_List previous = NULL;
+    Node_Forward_List current  = list->head;
+    Node_Forward_List previous = NULL;
 
     while (current) {
         if (current->next == NULL) {
             previous->next = NULL;
             data           = current->value;
-            node_list_destroy(current);
+            node_forward_list_destroy(current);
             list->tail = previous;
             break;
         }
@@ -154,8 +154,8 @@ void forward_list_clear(Forward_List list) {
 }
 
 void *forward_list_find(Forward_List list, void *data) {
-    void     *target  = NULL;
-    Node_List current = list->head;
+    void             *target  = NULL;
+    Node_Forward_List current = list->head;
 
     while (current) {
         if (!compare(current->value, data)) {

@@ -6,14 +6,14 @@
 #include <stdlib.h>
 
 struct _list {
-    int        size;
-    Node_DList head, tail;
+    int       size;
+    Node_List head, tail;
 };
 
 void list_print(void *x) {
     List list = x;
 
-    Node_DList cur = list->head;
+    Node_List cur = list->head;
 
     print("[");
     while (cur) {
@@ -32,11 +32,11 @@ int list_len(void *x) {
 void list_destroy(void *x) {
     List list = x;
 
-    Node_DList cur = list->head;
+    Node_List cur = list->head;
     while (cur) {
-        Node_DList aux = cur->next;
+        Node_List aux = cur->next;
         del(&cur->value);
-        node_dlist_destroy(cur);
+        node_list_destroy(cur);
         cur = aux;
     }
 }
@@ -72,8 +72,8 @@ void *list_back(List list) {
 }
 
 void list_push_front(List list, void *data) {
-    Node_DList cur = list->head;
-    list->head     = node_dlist_new(data, NULL, list->head);
+    Node_List cur = list->head;
+    list->head    = node_list_new(data, NULL, list->head);
     if (list->size == 0) {
         list->tail = list->head;
     } else {
@@ -89,10 +89,10 @@ void *list_pop_front(List list) {
     }
     void *data = list->head->value;
 
-    Node_DList n     = list->head;
+    Node_List n      = list->head;
     list->head       = list->head->next;
     list->head->prev = NULL;
-    node_dlist_destroy(n);
+    node_list_destroy(n);
 
     if (list->size == 1) {
         list->tail = list->head;
@@ -103,7 +103,7 @@ void *list_pop_front(List list) {
 }
 
 void list_push_back(List list, void *data) {
-    Node_DList n = node_dlist_new(data, list->tail, NULL);
+    Node_List n = node_list_new(data, list->tail, NULL);
 
     if (list->size == 0) {
         list->head = list->tail = n;
@@ -124,13 +124,13 @@ void *list_pop_back(List list) {
 
     if (list->size == 1) {
         data = list->head->value;
-        node_dlist_destroy(list->head);
+        node_list_destroy(list->head);
         list->head = list->tail = NULL;
     } else {
-        Node_DList penultimate = list->tail->prev;
-        penultimate->next      = NULL;
-        data                   = list->tail->value;
-        node_dlist_destroy(list->tail);
+        Node_List penultimate = list->tail->prev;
+        penultimate->next     = NULL;
+        data                  = list->tail->value;
+        node_list_destroy(list->tail);
         list->tail = penultimate;
     }
 
@@ -149,8 +149,8 @@ void list_clear(List list) {
 }
 
 void *list_find(List list, void *data) {
-    void      *target  = NULL;
-    Node_DList current = list->head;
+    void     *target  = NULL;
+    Node_List current = list->head;
 
     while (current) {
         if (!compare(current->value, data)) {
